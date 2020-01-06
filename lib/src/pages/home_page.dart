@@ -4,17 +4,18 @@ import 'package:formvalidation/src/models/producto_model.dart';
 import 'package:formvalidation/src/providers/productos_provider.dart';
 
 class HomePage extends StatelessWidget {
+
+  final productosProvider = new ProductosProvider();
+
   @override
   Widget build(BuildContext context) {
     final bloc = Provider.of(context);
-    final productosProvider = new ProductosProvider();
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Home'),
       ),
 //      body: _crearForm(bloc),
-      body: _crearListado(context, productosProvider),
+      body: _crearListado(context),
       floatingActionButton: _creatBoton(context),
     );
   }
@@ -31,7 +32,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _crearListado(BuildContext context, ProductosProvider productosProvider) {
+  Widget _crearListado(BuildContext context) {
     return FutureBuilder(
       future: productosProvider.cargarProductos(),
       builder: (BuildContext context, AsyncSnapshot<List<ProductoModel>> snapshot) {
@@ -55,7 +56,7 @@ class HomePage extends StatelessWidget {
         color: Colors.red,
       ),
       onDismissed: (direccion){
-        //TODO: Borrar producto
+        productosProvider.borrarProducto(producto.id);
       },
       child: ListTile(
         title: Text('${producto.titulo} - ${producto.valor}'),
