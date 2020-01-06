@@ -1,28 +1,24 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:formvalidation/src/models/producto_model.dart';
 import 'package:formvalidation/src/providers/productos_provider.dart';
 import 'package:formvalidation/src/utils/utils.dart' as utils;
+import 'package:image_picker/image_picker.dart';
 
 class ProductoPage extends StatefulWidget {
-
   @override
   _ProductoPageState createState() => _ProductoPageState();
 }
 
 class _ProductoPageState extends State<ProductoPage> {
-
   final formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final productorProvider = new ProductosProvider();
 
   ProductoModel producto = new ProductoModel();
   bool _guardando = false;
-
-  @override
-  void initState() {
-    super.initState();
-
-  }
+  File foto;
 
   @override
   Widget build(BuildContext context) {
@@ -37,11 +33,11 @@ class _ProductoPageState extends State<ProductoPage> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.photo_size_select_actual),
-            onPressed: () {},
+            onPressed: _seleccionarFoto,
           ),
           IconButton(
             icon: Icon(Icons.camera_alt),
-            onPressed: () {},
+            onPressed: _tomarFoto,
           ),
         ],
       ),
@@ -49,15 +45,16 @@ class _ProductoPageState extends State<ProductoPage> {
         child: Container(
           padding: EdgeInsets.all(15.0),
           child: Form(
-            key: formKey,
+              key: formKey,
               child: Column(
-            children: <Widget>[
-              _crearNombre(),
-              _crearPrecio(),
-              _crearDisponible(),
-              _crearBoton(),
-            ],
-          )),
+                children: <Widget>[
+                  _mostrarFoto(),
+                  _crearNombre(),
+                  _crearPrecio(),
+                  _crearDisponible(),
+                  _crearBoton(),
+                ],
+              )),
         ),
       ),
     );
@@ -114,7 +111,7 @@ class _ProductoPageState extends State<ProductoPage> {
       label: Text('Guardar'),
       color: Colors.deepPurple,
       textColor: Colors.white,
-      onPressed: (_guardando) ? null: _submit,
+      onPressed: (_guardando) ? null : _submit,
     );
   }
 
@@ -140,7 +137,7 @@ class _ProductoPageState extends State<ProductoPage> {
       });
       mostrarSnackbar('Registro guardado');
       Navigator.pop(context);
-    }  else {
+    } else {
       //Si el formulario no es valido
     }
   }
@@ -153,4 +150,25 @@ class _ProductoPageState extends State<ProductoPage> {
     scaffoldKey.currentState.showSnackBar(snackBar);
   }
 
+  Widget _mostrarFoto() {
+    if (producto.fotoUrl != null) {
+      return Container();
+    } else {
+      return Image(
+        image: AssetImage(foto?.path ?? 'assets/no-image.png'),
+        height: 300,
+        fit: BoxFit.cover,
+      );
+    }
+  }
+
+  _seleccionarFoto() async {
+    foto = await ImagePicker.pickImage(source: ImageSource.gallery);
+    if (foto != null) {
+      //
+    }
+    setState(() {});
+  }
+
+  _tomarFoto() {}
 }
