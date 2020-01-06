@@ -5,7 +5,7 @@ import 'package:formvalidation/src/models/producto_model.dart';
 
 class ProductosProvider {
 
-  final String _url = 'https://flutter-curso-47a1c.firebaseio.com';
+  final String _url = 'https://';
 
   Future<bool> crearProducto(ProductoModel producto) async {
     final url = '$_url/Productos.json';
@@ -13,6 +13,23 @@ class ProductosProvider {
     final decodeData = json.decode(response.body);
     print(decodeData);
     return true;
+  }
+
+  Future<List<ProductoModel>> cargarProductos() async {
+    final url = '$_url/Productos.json';
+    final resp = await http.get(url);
+    final Map<String, dynamic>decodeData = json.decode(resp.body);
+    final List<ProductoModel> productos = new List();
+
+    if (decodeData == null) return [];
+//    print(decodeData);
+    decodeData.forEach((id, prod){
+      final prodTemp = ProductoModel.fromJson(prod);
+      prodTemp.id = id;
+      productos.add(prodTemp);
+    });
+    print(productos);
+    return productos;
   }
 
 }
