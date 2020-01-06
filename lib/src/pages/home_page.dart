@@ -11,7 +11,6 @@ class HomePage extends StatelessWidget {
         title: Text('Home'),
       ),
       body: Column(
-
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -20,6 +19,16 @@ class HomePage extends StatelessWidget {
           Text('Password: ${bloc.password}')
         ],
       ),
+      floatingActionButton: _creatBoton(context),
+    );
+  }
+
+  Widget _creatBoton(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: () {
+        Navigator.pushNamed(context, 'producto');
+      },
+      child: Icon(Icons.add),
     );
   }
 }
