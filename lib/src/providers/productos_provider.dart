@@ -38,4 +38,12 @@ class ProductosProvider {
     return 1;
   }
 
+  Future<bool> editarProducto(ProductoModel producto) async {
+    final url = '$_url/Productos/${producto.id}.json';
+    final response = await http.put(url, body: productoModelToJson(producto));
+    final decodeData = json.decode(response.body);
+    print(decodeData);
+    return true;
+  }
+
 }

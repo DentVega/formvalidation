@@ -16,7 +16,17 @@ class _ProductoPageState extends State<ProductoPage> {
   ProductoModel producto = new ProductoModel();
 
   @override
+  void initState() {
+    super.initState();
+
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final ProductoModel prodArg = ModalRoute.of(context).settings.arguments;
+    if (prodArg != null) {
+      producto = prodArg;
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text('Producto'),
@@ -112,7 +122,11 @@ class _ProductoPageState extends State<ProductoPage> {
       print(producto.valor);
       print(producto.titulo);
       print(producto.disponible);
-      productorProvider.crearProducto(producto);
+      if (producto.id == null) {
+        productorProvider.crearProducto(producto);
+      } else {
+        productorProvider.editarProducto(producto);
+      }
     }  else {
       //Si el formulario no es valido
     }
