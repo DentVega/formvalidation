@@ -142,7 +142,8 @@ class LoginPage extends StatelessWidget {
                 ),
                 hintText: 'Ejemplo@correo.com',
                 labelText: 'Correo Electronico',
-                counterText: snapshot.data),
+                counterText: snapshot.data,
+                errorText: snapshot.error),
             onChanged: bloc.changeEmail,
           ),
         );
@@ -152,24 +153,24 @@ class LoginPage extends StatelessWidget {
 
   Widget _crearPassword(LoginBloc bloc) {
     return StreamBuilder(
-          stream: bloc.passwordSteam,
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            return Container(
-              padding: EdgeInsets.symmetric(horizontal: 20.0),
-              child: TextField(
-                obscureText: true,
-                decoration: InputDecoration(
-                  icon: Icon(
-                    Icons.lock_outline,
-                    color: Colors.deepPurple,
-                  ),
-                  labelText: 'Contraseña',
-                  counterText: snapshot.data
+      stream: bloc.passwordSteam,
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        return Container(
+          padding: EdgeInsets.symmetric(horizontal: 20.0),
+          child: TextField(
+            obscureText: true,
+            decoration: InputDecoration(
+                icon: Icon(
+                  Icons.lock_outline,
+                  color: Colors.deepPurple,
                 ),
-                onChanged: bloc.changePassword,
-              ),
-            );
-          },
+                labelText: 'Contraseña',
+                counterText: snapshot.data,
+                errorText: snapshot.error),
+            onChanged: bloc.changePassword,
+          ),
+        );
+      },
     );
   }
 

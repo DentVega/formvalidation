@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:formvalidation/src/bloc/validators.dart';
 
-class LoginBloc {
+
+class LoginBloc with Validators {
 
 
   final _emailController = StreamController<String>.broadcast();
@@ -9,9 +11,9 @@ class LoginBloc {
   final _passwordController = StreamController<String>.broadcast();
 
   //Recuperar los datos del Stream
-  Stream<String> get emailStream => _emailController.stream;
+  Stream<String> get emailStream => _emailController.stream.transform(validarEmail);
 
-  Stream<String> get passwordSteam => _passwordController.stream;
+  Stream<String> get passwordSteam => _passwordController.stream.transform(validarPassword);
 
   //Insertar valores al stream
   Function(String) get changeEmail => _emailController.sink.add;
