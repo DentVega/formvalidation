@@ -115,13 +115,17 @@ class _ProductoPageState extends State<ProductoPage> {
     );
   }
 
-  void _submit() {
+  void _submit() async {
     if (formKey.currentState.validate()) {
       //Si el formulario es valido
       formKey.currentState.save();
       setState(() {
         _guardando = true;
       });
+
+      if (foto != null) {
+        producto.fotoUrl = await productorProvider.subirImagen(foto);
+      }
 
       print('Todo ok');
       print(producto.valor);
