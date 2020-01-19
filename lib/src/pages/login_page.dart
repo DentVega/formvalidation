@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:formvalidation/src/bloc/provider.dart';
+import 'package:formvalidation/src/providers/usuario_provider.dart';
 
 class LoginPage extends StatelessWidget {
+
+  final usuarioProvider = new UsuarioProvider();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -200,10 +204,7 @@ class LoginPage extends StatelessWidget {
   }
 
   _login(LoginBloc bloc, BuildContext context) {
-    print('===============');
-    print('email: ${bloc.email}');
-    print('passowrd: ${bloc.password}');
-    print('===============');
-    Navigator.pushNamed(context, 'home');
+    usuarioProvider.login(bloc.email, bloc.password);
+//    Navigator.pushNamed(context, 'home');
   }
 }
