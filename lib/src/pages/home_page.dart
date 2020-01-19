@@ -4,7 +4,6 @@ import 'package:formvalidation/src/models/producto_model.dart';
 import 'package:formvalidation/src/providers/productos_provider.dart';
 
 class HomePage extends StatelessWidget {
-
   final productosProvider = new ProductosProvider();
 
   @override
@@ -15,7 +14,8 @@ class HomePage extends StatelessWidget {
         title: Text('Home'),
       ),
 //      body: _crearForm(bloc),
-      body: _crearListado(context),
+      body: Container(
+          padding: EdgeInsets.all(20.0), child: _crearListado(context)),
       floatingActionButton: _creatBoton(context),
     );
   }
@@ -34,19 +34,20 @@ class HomePage extends StatelessWidget {
 
   Widget _crearListado(BuildContext context) {
     return FutureBuilder(
-      future: productosProvider.cargarProductos(),
-      builder: (BuildContext context, AsyncSnapshot<List<ProductoModel>> snapshot) {
-        if (snapshot.hasData) {
-          final productos = snapshot.data;
-          return ListView.builder(
-              itemCount: productos.length,
-              itemBuilder: (context, i) => _crearItem(productos[i], context)
-          );
-        } else {
-          return Center(child: CircularProgressIndicator(),);
-        }
-      }
-    );
+        future: productosProvider.cargarProductos(),
+        builder: (BuildContext context,
+            AsyncSnapshot<List<ProductoModel>> snapshot) {
+          if (snapshot.hasData) {
+            final productos = snapshot.data;
+            return ListView.builder(
+                itemCount: productos.length,
+                itemBuilder: (context, i) => _crearItem(productos[i], context));
+          } else {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        });
   }
 
   Widget _crearItem(ProductoModel producto, BuildContext context) {
@@ -55,13 +56,29 @@ class HomePage extends StatelessWidget {
       background: Container(
         color: Colors.red,
       ),
-      onDismissed: (direccion){
+      onDismissed: (direccion) {
         productosProvider.borrarProducto(producto.id);
       },
-      child: ListTile(
-        title: Text('${producto.titulo} - ${producto.valor}'),
-        subtitle: Text(producto.id),
-        onTap: () => Navigator.pushNamed(context, 'producto', arguments: producto),
+      child: Card(
+        child: Column(
+          children: <Widget>[
+            (producto.fotoUrl == null)
+                ? Image(image: AssetImage('assets/no-image.png'))
+                : FadeInImage(
+                    image: NetworkImage(producto.fotoUrl),
+                    placeholder: AssetImage('assets/jar-loading.gif'),
+                    height: 300.0,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
+            ListTile(
+              title: Text('${producto.titulo} - ${producto.valor}'),
+              subtitle: Text(producto.id),
+              onTap: () =>
+                  Navigator.pushNamed(context, 'producto', arguments: producto),
+            )
+          ],
+        ),
       ),
     );
   }
