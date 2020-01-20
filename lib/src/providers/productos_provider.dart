@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:formvalidation/src/utils/preferencias_usuario.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 
@@ -9,11 +10,12 @@ import 'package:mime_type/mime_type.dart';
 import 'package:formvalidation/src/models/producto_model.dart';
 
 class ProductosProvider {
+  final _prefs = new PreferenciasUsuario();
 
   final String _url = 'https://';
 
   Future<bool> crearProducto(ProductoModel producto) async {
-    final url = '$_url/Productos.json';
+    final url = '$_url/Productos.json?auth=${_prefs.token}';
     final response = await http.post(url, body: productoModelToJson(producto));
     final decodeData = json.decode(response.body);
     print(decodeData);
@@ -21,7 +23,7 @@ class ProductosProvider {
   }
 
   Future<List<ProductoModel>> cargarProductos() async {
-    final url = '$_url/Productos.json';
+    final url = '$_url/Productos.json?auth=${_prefs.token}';
     final resp = await http.get(url);
     final Map<String, dynamic>decodeData = json.decode(resp.body);
     final List<ProductoModel> productos = new List();
@@ -38,13 +40,13 @@ class ProductosProvider {
   }
 
   Future<int> borrarProducto(String id) async {
-    final url = '$_url/Productos/$id.json';
+    final url = '$_url/Productos/$id.json?auth=${_prefs.token}';
     final resp = await http.delete(url);
     return 1;
   }
 
   Future<bool> editarProducto(ProductoModel producto) async {
-    final url = '$_url/Productos/${producto.id}.json';
+    final url = '$_url/Productos/${producto.id}.json?auth=${_prefs.token}';
     final response = await http.put(url, body: productoModelToJson(producto));
     final decodeData = json.decode(response.body);
     print(decodeData);
