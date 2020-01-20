@@ -4,7 +4,7 @@ import 'package:formvalidation/src/utils/preferencias_usuario.dart';
 import 'package:http/http.dart' as http;
 
 class UsuarioProvider {
-  final String _firebaseToken = 'AIzaSyBAnDY1IJPiW_uGAigbw2uFA7jF_74j3ew';
+  final String _firebaseToken = '_firebaseToken';
   final _prefs = new PreferenciasUsuario();
 
 
